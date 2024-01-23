@@ -1,0 +1,132 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Boxes from "../components/Boxes/index.tsx";
+import Canv from "../components/Canv";
+---
+
+<Layout title="Welcome to Astro.">
+  <main>
+    <form class="make_graph">
+      <label for="vertices">Input vertices</label>
+      <input type="text" id="vertices" name="vertices" required />
+      <label for="vertices">Input edges</label>
+      <input type="text" id="edges" name="edges" required />
+      <button type="submit">Make</button>
+    </form>
+    <Canv client:load />
+    <!-- <Boxes client:load /> -->
+  </main>
+</Layout>
+
+<script>
+  type Vertice = String;
+  type Edge = [Vertice, Vertice];
+  type Graph = {
+    Vertices: Vertice[];
+    Edges: Edge[];
+  };
+
+  const form = document.querySelector<HTMLFormElement>(".make_graph");
+
+  function validate_graph(G: Graph) {
+    const flat = G.Edges.flat();
+    console.log(flat);
+    console.log(
+      G.Edges.flat().every((vertice) => G.Vertices.includes(vertice))
+    );
+    return G.Edges.flat().every((vert) => G.Vertices.includes(vert));
+  }
+
+  validate_graph({
+    Vertices: ["A", "B", "C", "F"],
+    Edges: [
+      ["A", "B"],
+      ["B", "F"],
+    ],
+  });
+
+  form!.onsubmit = (e) => {
+    e.preventDefault();
+    let vertices: Vertice[] = e
+      .target!.vertices.value.split(",")
+      .map((vert: Vertice) => vert.trim());
+    console.log(vertices);
+
+    let edges: Edge[] = e
+      .target!.edges.value.split(" ")
+      .map((edge: String) => edge.replace(/[()]/g, "").split(","));
+
+    localStorage.setItem("vertices", JSON.stringify(vertices));
+    localStorage.setItem("edges", JSON.stringify(edges));
+
+    console.log(edges);
+  };
+  console.log(form);
+</script>
+
+<style>
+  main {
+    margin: auto;
+    padding: 1rem;
+    width: 100%;
+    height: auto;
+    max-width: calc(100% - 2rem);
+    color: white;
+    font-size: 20px;
+    line-height: 1.6;
+  }
+  .astro-a {
+    position: absolute;
+    top: -32px;
+    left: 50%;
+    transform: translatex(-50%);
+    width: 220px;
+    height: auto;
+    z-index: -1;
+  }
+  h1 {
+    font-size: 4rem;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    margin-bottom: 1em;
+  }
+  .make_graph {
+    display: flex;
+    flex-direction: column;
+  }
+  .text-gradient {
+    background-image: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 400%;
+    background-position: 0%;
+  }
+  .instructions {
+    margin-bottom: 2rem;
+    border: 1px solid rgba(var(--accent-light), 25%);
+    background: linear-gradient(
+      rgba(var(--accent-dark), 66%),
+      rgba(var(--accent-dark), 33%)
+    );
+    padding: 1.5rem;
+    border-radius: 8px;
+  }
+  .instructions code {
+    font-size: 0.8em;
+    font-weight: bold;
+    background: rgba(var(--accent-light), 12%);
+    color: rgb(var(--accent-light));
+    border-radius: 4px;
+    padding: 0.3em 0.4em;
+  }
+  .instructions strong {
+    color: rgb(var(--accent-light));
+  }
+  .link-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
+    gap: 2rem;
+    padding: 0;
+  }
+</style>
