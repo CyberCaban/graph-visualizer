@@ -1,68 +1,25 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Boxes from "../components/Boxes/index.tsx";
-import Canv from "../components/Canv";
+import GraphVisualizer from "../components/GraphVisualizer";
 ---
 
 <Layout title="Welcome to Astro.">
   <main>
-    <form class="make_graph">
-      <label for="vertices">Input vertices</label>
-      <input type="text" id="vertices" name="vertices" required />
-      <label for="vertices">Input edges</label>
-      <input type="text" id="edges" name="edges" required />
-      <button type="submit">Make</button>
-    </form>
-    <Canv client:load />
-    <!-- <Boxes client:load /> -->
+    <section class="graph_input">
+      <form class="make_graph">
+        <label for="vertices">Input vertices</label>
+        <input type="text" id="vertices" name="vertices" />
+        <label for="vertices">Input edges</label>
+        <input type="text" id="edges" name="edges" />
+        <button type="submit">Make</button>
+        <h4 class="error"></h4>
+      </form>
+    </section>
+    <GraphVisualizer client:load />
   </main>
 </Layout>
 
-<script>
-  type Vertice = String;
-  type Edge = [Vertice, Vertice];
-  type Graph = {
-    Vertices: Vertice[];
-    Edges: Edge[];
-  };
-
-  const form = document.querySelector<HTMLFormElement>(".make_graph");
-
-  function validate_graph(G: Graph) {
-    const flat = G.Edges.flat();
-    console.log(flat);
-    console.log(
-      G.Edges.flat().every((vertice) => G.Vertices.includes(vertice))
-    );
-    return G.Edges.flat().every((vert) => G.Vertices.includes(vert));
-  }
-
-  validate_graph({
-    Vertices: ["A", "B", "C", "F"],
-    Edges: [
-      ["A", "B"],
-      ["B", "F"],
-    ],
-  });
-
-  form!.onsubmit = (e) => {
-    e.preventDefault();
-    let vertices: Vertice[] = e
-      .target!.vertices.value.split(",")
-      .map((vert: Vertice) => vert.trim());
-    console.log(vertices);
-
-    let edges: Edge[] = e
-      .target!.edges.value.split(" ")
-      .map((edge: String) => edge.replace(/[()]/g, "").split(","));
-
-    localStorage.setItem("vertices", JSON.stringify(vertices));
-    localStorage.setItem("edges", JSON.stringify(edges));
-
-    console.log(edges);
-  };
-  console.log(form);
-</script>
+<script src="../scripts/graph_input.ts"></script>
 
 <style>
   main {
@@ -94,6 +51,31 @@ import Canv from "../components/Canv";
   .make_graph {
     display: flex;
     flex-direction: column;
+  }
+  .make_graph > label,
+  .make_graph > input {
+    font-size: 1rem;
+  }
+  .graph_input {
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+    max-width: 200px;
+    background-color: rgba(var(--accent-dark), 33%);
+    border-radius: 10px;
+    padding: 1rem;
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+  }
+  .error {
+    color: red;
+    margin: 1rem 0 0 0;
+  }
+  .vertice {
+    width: 2rem;
+    height: 2rem;
+    background-color: blanchedalmond;
   }
   .text-gradient {
     background-image: var(--accent-gradient);
