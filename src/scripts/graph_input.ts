@@ -1,9 +1,4 @@
-type Vertice = String;
-type Edge = [Vertice, Vertice];
-type Graph = {
-  Vertices: Vertice[];
-  Edges: Edge[];
-};
+import type { Edge, Graph, Vertice } from "../utils/types";
 
 const form = document.querySelector<HTMLFormElement>(".make_graph");
 const error = document.querySelector<HTMLHeadingElement>(".error");
