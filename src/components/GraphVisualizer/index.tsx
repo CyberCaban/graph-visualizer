@@ -15,10 +15,15 @@ export default function GraphVisualizer() {
       setEdges(JSON.parse(edges));
       console.log(JSON.parse(edges));
     };
+    const update = () => setUpdateArrow(updateArrow + 1);
 
     window.addEventListener("storage", handleStorage);
-    return () => window.removeEventListener("storage", handleStorage);
-  });
+    window.addEventListener("resize", update);
+    return () => {
+      window.removeEventListener("storage", handleStorage);
+      window.removeEventListener("resize", update);
+    };
+  }, []);
 
   useEffect(() => {
     setUpdateArrow(updateArrow + 1);
@@ -53,7 +58,7 @@ export default function GraphVisualizer() {
             color: "black",
             textAlign: "center",
             borderRadius: "50%",
-            top: `calc(30% + ${index * 10}rem)`,
+            top: `calc(30% + ${index * 3}rem)`,
             left: `calc(40% + ${10}rem)`,
             position: "absolute",
           }}

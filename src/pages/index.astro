@@ -3,14 +3,24 @@ import Layout from "../layouts/Layout.astro";
 import GraphVisualizer from "../components/GraphVisualizer";
 ---
 
-<Layout title="Welcome to Astro.">
+<Layout title="Graph Visualizer">
   <main>
     <section class="graph_input">
       <form class="make_graph">
         <label for="vertices">Input vertices</label>
-        <input type="text" id="vertices" name="vertices" />
+        <input
+          type="text"
+          id="vertices"
+          name="vertices"
+          placeholder="ex. 1,2,3..."
+        />
         <label for="vertices">Input edges</label>
-        <input type="text" id="edges" name="edges" />
+        <input
+          type="text"
+          id="edges"
+          name="edges"
+          placeholder="ex. (1,2) (3,1)..."
+        />
         <button type="submit">Make</button>
         <h4 class="error"></h4>
       </form>
