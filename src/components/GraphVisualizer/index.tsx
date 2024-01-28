@@ -7,16 +7,17 @@ import "./index.css";
 export default function GraphVisualizer() {
   const [vertices, setVertices] = useState<String[]>();
   const [edges, setEdges] = useState<Edge[]>();
+  const [isOriented, setIsOriented] = useState<boolean>();
   const [updateCount, setUpdateCount] = useState(0);
 
-  const updateArrow = () => setUpdateCount(updateCount + 1);
+  const updateArrow = () => setUpdateCount((prev) => prev + 1);
 
   useEffect(() => {
     const handleStorage = () => {
-      const { edges, vertices } = window.localStorage;
+      const { edges, vertices, isOriented } = window.localStorage;
       setVertices(JSON.parse(vertices));
       setEdges(JSON.parse(edges));
-      console.log(JSON.parse(edges));
+      setIsOriented(JSON.parse(isOriented));
     };
     handleStorage();
 
@@ -40,6 +41,7 @@ export default function GraphVisualizer() {
             start={`V-${start}`}
             end={`V-${end}`}
             key={`${start.concat(`-${end}`)}`}
+            showHead={isOriented}
           />
         ))}
       </svg>

@@ -25,7 +25,7 @@ const Arrow: React.FC<ArrowProps> = (props: ArrowProps) => {
     strokeWidth: props.strokeWidth || 5,
     fill: props.fill || "blue",
     head: {
-      show: props.showHead || true,
+      show: props.showHead,
       posX: 0,
       posY: 0,
       rotation: 0,
@@ -35,40 +35,53 @@ const Arrow: React.FC<ArrowProps> = (props: ArrowProps) => {
   let start: HTMLElement;
   let end: HTMLElement;
   const headSize = { x: 10.61, y: 15.56 };
+  // console.log(props.showHead);
 
   useEffect(() => {
     start = getElement(props.start);
     end = getElement(props.end);
+    const startX =
+      parseInt(start?.getBoundingClientRect().x.toFixed(0)) +
+      parseInt(start?.getBoundingClientRect().width.toFixed(0)) / 2;
+    const startY =
+      parseInt(start?.getBoundingClientRect().y.toFixed(0)) +
+      parseInt(start?.getBoundingClientRect().height.toFixed(0)) / 2;
+    const endX =
+      parseInt(end?.getBoundingClientRect().x.toFixed(0)) +
+      parseInt(end?.getBoundingClientRect().width.toFixed(0)) / 2;
+    const endY =
+      parseInt(end?.getBoundingClientRect().y.toFixed(0)) +
+      parseInt(end?.getBoundingClientRect().height.toFixed(0)) / 2;
     // console.log(start.getBoundingClientRect());
-    console.log(end.getBoundingClientRect());
+    // console.log(end.getBoundingClientRect());
 
     setSt((prev) => ({
       ...prev,
-      startX:
-        parseInt(start?.getBoundingClientRect().x.toFixed(0)) +
-        parseInt(start?.getBoundingClientRect().width.toFixed(0)) / 2,
-      startY:
-        parseInt(start?.getBoundingClientRect().y.toFixed(0)) +
-        parseInt(start?.getBoundingClientRect().height.toFixed(0)) / 2,
-      endX:
-        parseInt(end?.getBoundingClientRect().x.toFixed(0)) +
-        parseInt(end?.getBoundingClientRect().width.toFixed(0)) / 2,
-      endY:
-        parseInt(end?.getBoundingClientRect().y.toFixed(0)) +
-        parseInt(end?.getBoundingClientRect().height.toFixed(0)) / 2,
+      startX,
+      startY,
+      endX,
+      endY,
     }));
 
     if (st.head.show) {
+      let dx = endX - startX;
+      let dy = endY - startY;
+      let xSign = dx > 0 ? 1 : -1;
+      let ySign = dy > 0 ? 1 : -1;
+      let absDx = Math.abs(dx);
+      let absDy = Math.abs(dy);
+      let angle = Math.atan(absDy / absDx);
+      angle *= ySign;
+      if (xSign < 0) angle = (Math.PI - angle * xSign) * xSign;
+      // console.log(angle);
+
       setSt((prev) => ({
         ...prev,
         head: {
           ...prev.head,
-          posX: prev.startX + (prev.endX - prev.startX - headSize.x) / 2,
-          posY: prev.startY + (prev.endY - prev.startY - headSize.y) / 2,
-          rotation:
-            (Math.atan(-(prev.endY - prev.startY) / (prev.endX - prev.startX)) *
-              180) /
-            Math.PI,
+          posX: prev.startX + (dx - headSize.x) / 2,
+          posY: prev.startY + (dy - headSize.y) / 2,
+          rotation: (angle * 180) / Math.PI,
         },
       }));
     }
@@ -77,12 +90,12 @@ const Arrow: React.FC<ArrowProps> = (props: ArrowProps) => {
   useEffect(() => {
     setD(`M ${st.startX} ${st.startY} L ${st.endX} ${st.endY}`);
     setDHead(
-      `translate(${st.head.posX}, ${st.head.posY}) rotate(${-st.head
-        .rotation}) scale(${st.head.scale})`
+      `translate(${st.head.posX}, ${st.head.posY}) rotate(${st.head.rotation}) scale(${st.head.scale})`
     );
 
-    const tan = -(st.endY - st.startY) / (st.endX - st.startX);
-    console.log(tan);
+    const tan =
+      ((-(st.endY - st.startY) / (st.endX - st.startX)) * 180) / Math.PI / 4;
+    // console.log(tan);
   }, [st]);
 
   return (
