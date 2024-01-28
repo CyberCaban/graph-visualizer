@@ -2,11 +2,14 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Arrow from "../Arrow";
 import type { Edge } from "../../utils/types";
+import "./index.css";
 
 export default function GraphVisualizer() {
   const [vertices, setVertices] = useState<String[]>();
   const [edges, setEdges] = useState<Edge[]>();
-  const [updateArrow, setUpdateArrow] = useState(0);
+  const [updateCount, setUpdateCount] = useState(0);
+
+  const updateArrow = () => setUpdateCount(updateCount + 1);
 
   useEffect(() => {
     const handleStorage = () => {
@@ -15,52 +18,43 @@ export default function GraphVisualizer() {
       setEdges(JSON.parse(edges));
       console.log(JSON.parse(edges));
     };
-    const update = () => setUpdateArrow(updateArrow + 1);
+    handleStorage();
 
     window.addEventListener("storage", handleStorage);
-    window.addEventListener("resize", update);
+    window.addEventListener("resize", updateArrow);
     return () => {
       window.removeEventListener("storage", handleStorage);
-      window.removeEventListener("resize", update);
+      window.removeEventListener("resize", updateArrow);
     };
   }, []);
 
   useEffect(() => {
-    setUpdateArrow(updateArrow + 1);
+    updateArrow();
   }, [edges, vertices]);
 
   return (
     <>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        style={{ width: "100%", height: "100%" }}
-        key={updateArrow}
-      >
+      <svg xmlns="http://www.w3.org/2000/svg" key={updateCount}>
         {edges?.map(([start, end]: Edge) => (
-          <Arrow start={`V-${start}`} end={`V-${end}`} key={`${start}`} />
+          <Arrow
+            start={`V-${start}`}
+            end={`V-${end}`}
+            key={`${start.concat(`-${end}`)}`}
+          />
         ))}
       </svg>
 
       {vertices?.map((vert, index) => (
         <motion.div
-          // onDrag={(e, info) => setC(c + 1)}
-          onDragEnd={(e, info) => setUpdateArrow(updateArrow + 1)}
+          onDragEnd={() => setUpdateCount(updateCount + 1)}
           drag
           dragMomentum={false}
           key={`${vert}`}
           className="vertice"
           id={`V-${vert}`}
           style={{
-            width: "3rem",
-            height: "3rem",
-            backgroundColor: "blanchedalmond",
-            userSelect: "none",
-            color: "black",
-            textAlign: "center",
-            borderRadius: "50%",
             top: `calc(30% + ${index * 3}rem)`,
-            left: `calc(40% + ${10}rem)`,
-            position: "absolute",
+            left: `calc(40%)`,
           }}
         >
           {vert}

@@ -32,6 +32,7 @@ form!.onsubmit = (e) => {
   let edges: Edge[] = e
     //@ts-ignore
     .target!.edges.value.split(" ")
+    .filter((edge: String) => edge !== "")
     .map((edge: String) => edge.replace(/[()]/g, "").split(","));
 
   let is_valid_graph = validate_graph({
@@ -44,8 +45,8 @@ form!.onsubmit = (e) => {
     error!.textContent = `Error: non-existent edges: ${is_valid_graph}`;
   } else {
     error!.textContent = "";
+    localStorage.setItem("vertices", JSON.stringify(vertices));
+    localStorage.setItem("edges", JSON.stringify(edges));
+    window.dispatchEvent(new Event("storage"));
   }
-  localStorage.setItem("vertices", JSON.stringify(vertices));
-  localStorage.setItem("edges", JSON.stringify(edges));
-  window.dispatchEvent(new Event("storage"));
 };
