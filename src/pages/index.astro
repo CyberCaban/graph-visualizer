@@ -5,38 +5,53 @@ import GraphVisualizer from "../components/GraphVisualizer";
 
 <Layout title="Graph Visualizer">
   <main>
-    <section class="graph_input">
-      <form class="make_graph">
-        <label for="vertices">Input vertices</label>
-        <input
-          type="text"
-          id="vertices"
-          name="vertices"
-          placeholder="ex. 1,2,3..."
-        />
-        <label for="vertices">Input edges</label>
-        <input
-          type="text"
-          id="edges"
-          name="edges"
-          placeholder="ex. 1,2 3,1..."
-        />
-        <label for="isOriented"
-          >Oriented: <input
+    <div class="gui">
+      <section class="gui_input graph_input">
+        <button class="btn open_perf_sett">P</button>
+        <form class="make_graph">
+          <label for="vertices">Input vertices</label>
+          <input
+            type="text"
+            id="vertices"
+            name="vertices"
+            placeholder="ex. 1,2,3..."
+          />
+          <label for="vertices">Input edges</label>
+          <input
+            type="text"
+            id="edges"
+            name="edges"
+            placeholder="ex. 1,2 3,1..."
+          />
+          <label for="isOriented" id="isOriented_label" class="checkbox_label"
+            >Oriented: <input
+              type="checkbox"
+              name="isOriented"
+              id="isOriented_input"
+              class="checkbox_input"
+            /></label
+          >
+          <button type="submit" class="btn">Make</button>
+          <h4 class="error"></h4>
+        </form>
+      </section>
+      <section class="gui_input perf_settings">
+        <label for="smooth_render" class="checkbox_label"
+          >Smooth render: <input
             type="checkbox"
-            name="isOriented"
-            id="isOriented"
+            name="smooth_render"
+            id="smooth_render"
+            class="checkbox_input"
           /></label
         >
-        <button type="submit">Make</button>
-        <h4 class="error"></h4>
-      </form>
-    </section>
+      </section>
+    </div>
     <GraphVisualizer client:load />
   </main>
 </Layout>
 
 <script src="../scripts/graph_input.ts"></script>
+<script src="../scripts/perf_settings.ts"></script>
 
 <style>
   main {
@@ -63,6 +78,43 @@ import GraphVisualizer from "../components/GraphVisualizer";
     text-align: center;
     margin-bottom: 1em;
   }
+  .btn {
+    color: rgb(204, 204, 204);
+    padding: 0.2rem 0.5rem;
+    background-color: rgba(var(--color), 100%);
+    border-radius: 10px;
+    border: none;
+    /* border: 1px solid rgba(var(--accent)); */
+    transition: 0.1s;
+  }
+  .btn:hover {
+    background-color: rgba(var(--color), 70%);
+  }
+  .gui {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: start;
+    padding: 1rem;
+    margin: 1rem;
+    position: absolute;
+  }
+  .gui_input {
+    display: flex;
+    flex-direction: column;
+    /* width: 40%; */
+    max-width: 200px;
+    background-color: rgba(var(--accent-dark), 33%);
+    border-radius: 10px;
+    padding: 1rem;
+    margin: 0.2rem;
+  }
+  .graph_input {
+  }
+  .open_perf_sett {
+  }
+  .perf_settings {
+    /* margin: 0 0.5rem; */
+  }
   .make_graph {
     display: flex;
     flex-direction: column;
@@ -71,17 +123,13 @@ import GraphVisualizer from "../components/GraphVisualizer";
   .make_graph > input {
     font-size: 1rem;
   }
-  .graph_input {
+
+  .checkbox_label {
     display: flex;
-    flex-direction: column;
-    width: 40%;
-    max-width: 200px;
-    background-color: rgba(var(--accent-dark), 33%);
-    border-radius: 10px;
-    padding: 1rem;
-    position: absolute;
-    top: 2rem;
-    left: 2rem;
+    font-size: 1rem;
+  }
+  .checkbox_input {
+    margin: 3px 3px 0 3px;
   }
   .error {
     color: red;

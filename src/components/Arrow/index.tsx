@@ -1,31 +1,20 @@
 import { useEffect, useState } from "react";
 import { getElement } from "../../utils";
-import type { refType } from "../../utils/types";
-
-type ArrowProps = {
-  start: refType;
-  end: refType;
-  oriented?: boolean;
-  stroke?: string;
-  strokeWidth?: string | number;
-  fill?: string;
-  showHead?: boolean;
-  headScale?: number;
-};
+import type { ArrowProps, ArrowState } from "../../utils/types";
 
 const Arrow: React.FC<ArrowProps> = (props: ArrowProps) => {
   const [d, setD] = useState<string>();
   const [dHead, setDHead] = useState<string>();
-  const [st, setSt] = useState({
+  const [st, setSt] = useState<ArrowState>({
     startX: 0,
     startY: 0,
     endX: 0,
     endY: 0,
-    stroke: props.stroke || "red",
+    stroke: props.color || "red",
     strokeWidth: props.strokeWidth || 5,
     fill: props.fill || "blue",
     head: {
-      show: props.showHead,
+      show: !!props.showHead,
       posX: 0,
       posY: 0,
       rotation: 0,
@@ -52,8 +41,6 @@ const Arrow: React.FC<ArrowProps> = (props: ArrowProps) => {
     const endY =
       parseInt(end?.getBoundingClientRect().y.toFixed(0)) +
       parseInt(end?.getBoundingClientRect().height.toFixed(0)) / 2;
-    // console.log(start.getBoundingClientRect());
-    // console.log(end.getBoundingClientRect());
 
     setSt((prev) => ({
       ...prev,
@@ -79,8 +66,8 @@ const Arrow: React.FC<ArrowProps> = (props: ArrowProps) => {
         ...prev,
         head: {
           ...prev.head,
-          posX: prev.startX + (dx - headSize.x) / 2,
-          posY: prev.startY + (dy - headSize.y) / 2,
+          posX: startX + (dx - headSize.x) / 2,
+          posY: startY + (dy - headSize.y) / 2,
           rotation: (angle * 180) / Math.PI,
         },
       }));
@@ -92,10 +79,6 @@ const Arrow: React.FC<ArrowProps> = (props: ArrowProps) => {
     setDHead(
       `translate(${st.head.posX}, ${st.head.posY}) rotate(${st.head.rotation}) scale(${st.head.scale})`
     );
-
-    const tan =
-      ((-(st.endY - st.startY) / (st.endX - st.startX)) * 180) / Math.PI / 4;
-    // console.log(tan);
   }, [st]);
 
   return (

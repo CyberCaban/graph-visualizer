@@ -4,19 +4,18 @@ const form = document.querySelector<HTMLFormElement>(".make_graph");
 const error = document.querySelector<HTMLHeadingElement>(".error");
 
 window.dispatchEvent(new Event("storage"));
-function loadValuesFromLocalstorage() {
-  console.log(form!.vertices.value);
+
+function load_values_from_localstorage() {
   const is_visited_before = !!localStorage.getItem("vertices");
   if (!is_visited_before) {
     return;
   }
   form!.vertices.value = JSON.parse(localStorage.getItem("vertices")!);
   form!.edges.value = JSON.parse(localStorage.getItem("edges")!).join(" ");
-  form!.isOriented.checked = JSON.parse(localStorage.getItem("isOriented"));
-  console.log(JSON.parse(localStorage.getItem("edges")!).join(" "));
+  form!.isOriented.checked = JSON.parse(localStorage.getItem("isOriented")!);
 }
 
-window.addEventListener("load", loadValuesFromLocalstorage);
+window.addEventListener("load", load_values_from_localstorage);
 
 function validate_graph(G: Graph): boolean | String[] {
   let err: String[] = [];
