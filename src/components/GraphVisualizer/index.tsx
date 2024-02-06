@@ -52,7 +52,7 @@ export default function GraphVisualizer() {
       {isSmooth
         ? vertices?.map((vert, index) => (
             <motion.div
-              onDrag={() => updateArrow()}
+              onDrag={updateArrow}
               drag
               dragMomentum={false}
               key={`${vert}`}
@@ -60,7 +60,6 @@ export default function GraphVisualizer() {
               id={`V-${vert}`}
               style={{
                 top: `calc(30% + ${index * 3}rem)`,
-                left: `calc(40%)`,
               }}
             >
               {vert}
@@ -68,7 +67,7 @@ export default function GraphVisualizer() {
           ))
         : vertices?.map((vert, index) => (
             <motion.div
-              onDragEnd={() => setUpdateCount(updateCount + 1)}
+              onDragEnd={updateArrow}
               drag
               dragMomentum={false}
               key={`${vert}`}
@@ -76,7 +75,6 @@ export default function GraphVisualizer() {
               id={`V-${vert}`}
               style={{
                 top: `calc(30% + ${index * 3}rem)`,
-                left: `calc(40%)`,
               }}
             >
               {vert}
