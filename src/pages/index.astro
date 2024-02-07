@@ -44,7 +44,9 @@ import GraphVisualizer from "../components/GraphVisualizer";
             class="checkbox_input"
           /></label
         >
-        <label for="edge_color">Edge Color</label>
+        <label for="edge_color"
+          >Edge Color <br /><span class="tip">not functional yet</span></label
+        >
         <input type="color" name="edge_color" id="" />
       </section>
     </div>
@@ -125,7 +127,9 @@ import GraphVisualizer from "../components/GraphVisualizer";
   .make_graph > input {
     font-size: 1rem;
   }
-
+  .tip {
+    color: rgb(130, 130, 130);
+  }
   .checkbox_label {
     display: flex;
     font-size: 1rem;
