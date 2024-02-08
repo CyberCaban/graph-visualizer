@@ -14,9 +14,9 @@ export default function GraphVisualizer() {
   const updateArrow = () => setUpdateCount((prev) => prev + 1);
 
   useEffect(() => {
-    const handleStorage = () => {
+    const handleStorage = async () => {
       const { edges, vertices, isOriented, smooth_render } =
-        window.localStorage;
+        await window.localStorage;
       setVertices(JSON.parse(vertices));
       setEdges(JSON.parse(edges));
       setIsOriented(JSON.parse(isOriented));
@@ -37,7 +37,7 @@ export default function GraphVisualizer() {
   }, [edges, vertices]);
 
   return (
-    <>
+    <div className="GrVi">
       <svg xmlns="http://www.w3.org/2000/svg" key={updateCount}>
         {edges?.map(([start, end]: Edge) => (
           <Arrow
@@ -80,6 +80,6 @@ export default function GraphVisualizer() {
               {vert}
             </motion.div>
           ))}
-    </>
+    </div>
   );
 }
