@@ -84,7 +84,10 @@ import GraphVisualizer from "../components/GraphVisualizer";
   }
   .btn {
     color: rgb(204, 204, 204);
-    padding: 0.2rem 0.5rem;
+    padding: 8px 12px;
+    font-size: 1rem;
+    font-weight: 800;
+    font-family: "Semplicita Pro";
     background-color: rgba(var(--color), 100%);
     border-radius: 10px;
     border: none;
@@ -93,6 +96,20 @@ import GraphVisualizer from "../components/GraphVisualizer";
   }
   .btn:hover {
     background-color: rgba(var(--color), 70%);
+  }
+  input {
+    accent-color: rgba(var(--color), 70%);
+    border: 2px solid white;
+    border-radius: 0.25rem;
+    background-color: rgb(245, 239, 255);
+    font-weight: 500;
+    height: 1.5rem;
+  }
+  input:checked {
+    background-color: black;
+  }
+  input:focus {
+    background-color: rgb(245, 240, 255);
   }
   .gui {
     display: flex;
