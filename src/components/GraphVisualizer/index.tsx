@@ -17,6 +17,8 @@ export default function GraphVisualizer() {
     const handleStorage = async () => {
       const { edges, vertices, isOriented, smooth_render } =
         await window.localStorage;
+      console.log(smooth_render);
+
       setVertices(JSON.parse(vertices));
       setEdges(JSON.parse(edges));
       setIsOriented(JSON.parse(isOriented));

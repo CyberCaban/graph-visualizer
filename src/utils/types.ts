@@ -33,3 +33,7 @@ export type ArrowState = {
   fill: string;
   head: ArrowHead;
 };
+export type gui_state = {
+  graph_input: boolean;
+  settings: boolean;
+};

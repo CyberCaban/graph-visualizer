@@ -1,13 +1,20 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import GraphVisualizer from "../components/GraphVisualizer";
+import unminimize from "../../public/angle.svg";
 ---
 
 <Layout title="Graph Visualizer">
   <main>
     <div class="gui">
+      <button class="icon_btn unminimize">
+        <img src={unminimize.src} class="unminimize_icon" />
+      </button>
       <section class="gui_input graph_input">
-        <button class="btn open_perf_sett">Settings</button>
+        <div class="btn_panel">
+          <button class="btn minimize">Close</button>
+          <button class="btn open_perf_sett">Settings</button>
+        </div>
         <form class="make_graph">
           <label for="vertices">Input vertices</label>
           <input
@@ -56,6 +63,7 @@ import GraphVisualizer from "../components/GraphVisualizer";
 
 <script src="../scripts/graph_input.ts"></script>
 <script src="../scripts/perf_settings.ts"></script>
+<script src="../scripts/gui_controller.ts"></script>
 
 <style>
   main {
@@ -110,6 +118,19 @@ import GraphVisualizer from "../components/GraphVisualizer";
   }
   input:focus {
     background-color: rgb(245, 240, 255);
+  }
+  .icon_btn {
+    width: 2rem;
+    background: none;
+    padding: 0;
+    border: none;
+    position: absolute;
+  }
+  .unminimize_icon {
+    width: 2rem;
+    color: white;
+    display: none;
+    /* height: 2rem; */
   }
   .gui {
     display: flex;
