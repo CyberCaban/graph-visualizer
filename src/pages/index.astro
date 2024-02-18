@@ -12,7 +12,9 @@ import unminimize from "../../public/angle.svg";
       </button>
       <section class="gui_input graph_input">
         <div class="btn_panel">
-          <button class="btn minimize">Close</button>
+          <button class="btn minimize">
+            <img src={unminimize.src} alt="" class="minimize_icon" />
+          </button>
           <button class="btn open_perf_sett">Settings</button>
         </div>
         <form class="make_graph">
@@ -119,18 +121,37 @@ import unminimize from "../../public/angle.svg";
   input:focus {
     background-color: rgb(245, 240, 255);
   }
+  .btn_panel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
   .icon_btn {
     width: 2rem;
     background: none;
-    padding: 0;
+    padding: 1.5rem;
     border: none;
     position: absolute;
+  }
+  .unminimize {
+    display: none;
   }
   .unminimize_icon {
     width: 2rem;
     color: white;
-    display: none;
+    padding: 4px 4px;
+    border: 1px rgba(var(--color), 100%) solid;
+    border-radius: 10px;
+    /* display: none; */
     /* height: 2rem; */
+  }
+  .minimize {
+    padding: 0 4px;
+  }
+  .minimize_icon {
+    width: 2rem;
+    color: white;
+    transform: rotate(180deg);
   }
   .gui {
     display: flex;
@@ -156,6 +177,7 @@ import unminimize from "../../public/angle.svg";
   .open_perf_sett {
   }
   .perf_settings {
+    display: none;
     /* margin: 0 0.5rem; */
   }
   .make_graph {

@@ -34,6 +34,7 @@ export type ArrowState = {
   head: ArrowHead;
 };
 export type gui_state = {
+  [index: string]: any;
   graph_input: boolean;
-  settings: boolean;
+  perf_settings: boolean;
 };
