@@ -1,6 +1,7 @@
 export type refType = React.MutableRefObject<any> | string;
 export type Vertice = String;
-export type Edge = [Vertice, Vertice];
+export type Edge_weight = String;
+export type Edge = [Vertice, Vertice, Edge_weight?];
 export type Graph = {
   Vertices: Vertice[];
   Edges: Edge[];
@@ -9,6 +10,7 @@ export type ArrowProps = {
   start: refType;
   end: refType;
   oriented?: boolean;
+  weight?: string;
   color?: string;
   strokeWidth?: string | number;
   fill?: string;

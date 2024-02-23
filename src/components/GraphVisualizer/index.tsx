@@ -41,12 +41,13 @@ export default function GraphVisualizer() {
   return (
     <div className="GrVi">
       <svg xmlns="http://www.w3.org/2000/svg" key={updateCount}>
-        {edges?.map(([start, end]: Edge) => (
+        {edges?.map(([start, end, weight]: Edge) => (
           <Arrow
             start={`V-${start}`}
             end={`V-${end}`}
-            key={`${start.concat(`-${end}`)}`}
+            key={`${start.concat(`-${end}-${weight || ""}`)}`}
             showHead={isOriented}
+            weight={`${weight || ""}`}
           />
         ))}
       </svg>

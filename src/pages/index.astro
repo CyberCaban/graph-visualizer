@@ -23,14 +23,14 @@ import unminimize from "../../public/angle.svg";
             type="text"
             id="vertices"
             name="vertices"
-            placeholder="ex. 1,2,3..."
+            placeholder="ex. A,B,C..."
           />
           <label for="edges">Input edges</label>
           <input
             type="text"
             id="edges"
             name="edges"
-            placeholder="ex. 1,2 3,1..."
+            placeholder="ex. A,B,4 C,A,5..."
           />
           <label for="isOriented" id="isOriented_label" class="checkbox_label"
             >Oriented: <input
@@ -127,9 +127,9 @@ import unminimize from "../../public/angle.svg";
     align-items: center;
   }
   .icon_btn {
-    width: 2rem;
+    /* width: 2rem; */
     background: none;
-    padding: 1.5rem;
+    margin: 1.5rem;
     border: none;
     position: absolute;
   }
@@ -157,8 +157,7 @@ import unminimize from "../../public/angle.svg";
     display: flex;
     flex-flow: row wrap;
     align-items: start;
-    padding: 1rem;
-    margin: 1rem;
+    margin: 2rem;
     position: absolute;
     z-index: 2;
   }

@@ -9,12 +9,15 @@ const Arrow: React.FC<ArrowProps> = (props: ArrowProps) => {
     fill: props.fill || "red",
     headScale: props.headScale || 1.5,
     headShow: !!props.showHead,
+    weight: props.weight,
   });
   const [st, setSt] = useState({
     startX: 0,
     startY: 0,
     endX: 0,
     endY: 0,
+    weightPosX: 0,
+    weightPosY: 0,
   });
   const [headSt, setHeadSt] = useState({
     posX: 0,
@@ -41,27 +44,34 @@ const Arrow: React.FC<ArrowProps> = (props: ArrowProps) => {
       parseInt(end?.getBoundingClientRect().y.toFixed(0)) +
       parseInt(end?.getBoundingClientRect().height.toFixed(0)) / 2;
 
+    let dx = endX - startX;
+    let dy = endY - startY;
+    let xSign = dx > 0 ? 1 : -1;
+    let ySign = dy > 0 ? 1 : -1;
+    let absDx = Math.abs(dx);
+    let absDy = Math.abs(dy);
+    let angle = Math.atan2(absDy, absDx);
+    angle *= ySign;
+    if (xSign < 0) angle = (Math.PI - angle * xSign) * xSign;
+
+    const weightPosX = startX + dx * 0.41;
+    const weightPosY = startY + dy * 0.41;
+    const headPosX = startX + dx * 0.5;
+    const headPosY = startY + dy * 0.5;
+
     setSt({
       startX,
       startY,
       endX,
       endY,
+      weightPosX,
+      weightPosY,
     });
 
     if (Props.headShow) {
-      let dx = endX - startX;
-      let dy = endY - startY;
-      let xSign = dx > 0 ? 1 : -1;
-      let ySign = dy > 0 ? 1 : -1;
-      let absDx = Math.abs(dx);
-      let absDy = Math.abs(dy);
-      let angle = Math.atan(absDy / absDx);
-      angle *= ySign;
-      if (xSign < 0) angle = (Math.PI - angle * xSign) * xSign;
-
       setHeadSt({
-        posX: startX + dx / 2,
-        posY: startY + dy / 2,
+        posX: headPosX,
+        posY: headPosY,
         rotation: (angle * 180) / Math.PI,
       });
     }
@@ -74,11 +84,18 @@ const Arrow: React.FC<ArrowProps> = (props: ArrowProps) => {
         stroke={Props.stroke}
         strokeWidth={Props.strokeWidth}
       />
+      <text
+        transform={`translate(${st.weightPosX}, ${st.weightPosY}) scale(${Props.headScale})`}
+        fill="white"
+        wordSpacing="10px"
+        spacing={10}
+      >
+        {Props.weight}
+      </text>
       {Props.headShow && (
-        <g
-          transform={`translate(${headSt.posX}, ${headSt.posY}) rotate(${headSt.rotation}) scale(${Props.headScale})`}
-        >
+        <g>
           <path
+            transform={`translate(${headSt.posX}, ${headSt.posY}) rotate(${headSt.rotation}) scale(${Props.headScale})`}
             d="m2.828 15.555 7.777-7.779L2.828 0 0 2.828l4.949 4.948L0 12.727l2.828 2.828z"
             stroke="white"
             fill={Props.fill}

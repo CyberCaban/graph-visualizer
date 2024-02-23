@@ -17,17 +17,18 @@ function load_values_from_localstorage() {
 
 window.addEventListener("load", load_values_from_localstorage);
 
-function validate_graph(G: Graph): boolean | String[] {
-  let err: String[] = [];
+function validate_graph(G: Graph): boolean | any[] {
+  let err = [];
   const edges = G.Edges.flat();
 
   if (G.Vertices[0] === "") {
     return false;
   }
 
-  for (let i = 0; i < edges.length; i++) {
-    const el = edges[i];
-    if (!G.Vertices.includes(el)) {
+  for (let i = 0; i < G.Edges.length; i++) {
+    const el = G.Edges[i];
+    const [vert1, vert2, weight] = G.Edges[i];
+    if (!G.Vertices.includes(vert1) || !G.Vertices.includes(vert2)) {
       err.push(el);
     }
   }
@@ -40,7 +41,6 @@ function validate_graph(G: Graph): boolean | String[] {
 
 form!.onsubmit = (e) => {
   e.preventDefault();
-  console.log(e);
 
   let vertices: Vertice[] = e
     //@ts-ignore
