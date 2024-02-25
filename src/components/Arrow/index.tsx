@@ -54,8 +54,9 @@ const Arrow: React.FC<ArrowProps> = (props: ArrowProps) => {
     angle *= ySign;
     if (xSign < 0) angle = (Math.PI - angle * xSign) * xSign;
 
-    const weightPosX = startX + dx * 0.41;
-    const weightPosY = startY + dy * 0.41;
+    const weightOffset = Props.headShow ? 0.41 : 0.5;
+    const weightPosX = startX + dx * weightOffset;
+    const weightPosY = startY + dy * weightOffset;
     const headPosX = startX + dx * 0.5;
     const headPosY = startY + dy * 0.5;
 

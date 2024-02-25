@@ -2,6 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import GraphVisualizer from "../components/GraphVisualizer";
 import unminimize from "../../public/angle.svg";
+import Dijkstra from "../components/Algos/Dijkstra";
 ---
 
 <Layout title="Graph Visualizer">
@@ -15,6 +16,7 @@ import unminimize from "../../public/angle.svg";
           <button class="btn minimize">
             <img src={unminimize.src} alt="" class="minimize_icon" />
           </button>
+          <button class="btn open_algos">Algos</button>
           <button class="btn open_perf_sett">Settings</button>
         </div>
         <form class="make_graph">
@@ -53,19 +55,33 @@ import unminimize from "../../public/angle.svg";
             class="checkbox_input"
           /></label
         >
-        <label for="edge_color"
+        <!-- <label for="edge_color"
           >Edge Color <br /><span class="tip">not functional yet</span></label
         >
-        <input type="color" name="edge_color" id="" />
+        <input type="color" name="edge_color" id="" /> -->
+      </section>
+      <section class="gui_input algos">
+        <form action="" class="algos_dijkstra">
+          <label for="">Dijkstra</label>
+          <input
+            type="text"
+            id="dijkstra_input"
+            name="dijkstra_input"
+            class="dijkstra_input"
+          />
+          <button class="btn" type="submit">Start</button>
+        </form>
       </section>
     </div>
     <GraphVisualizer client:load />
+    <Dijkstra client:load />
   </main>
 </Layout>
 
 <script src="../scripts/graph_input.ts"></script>
 <script src="../scripts/perf_settings.ts"></script>
 <script src="../scripts/gui_controller.ts"></script>
+<script src="../scripts/algos_controller.ts"></script>
 
 <style>
   main {
@@ -114,6 +130,7 @@ import unminimize from "../../public/angle.svg";
     background-color: rgb(245, 239, 255);
     font-weight: 500;
     height: 1.5rem;
+    margin: 0.5rem 0;
   }
   input:checked {
     background-color: black;

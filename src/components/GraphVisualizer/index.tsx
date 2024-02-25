@@ -8,16 +8,15 @@ export default function GraphVisualizer() {
   const [vertices, setVertices] = useState<String[]>();
   const [edges, setEdges] = useState<Edge[]>();
   const [isOriented, setIsOriented] = useState<boolean>();
-  const [isSmooth, setIsSmooth] = useState();
+  const [isSmooth, setIsSmooth] = useState<boolean>();
   const [updateCount, setUpdateCount] = useState(0);
 
   const updateArrow = () => setUpdateCount((prev) => prev + 1);
 
   useEffect(() => {
-    const handleStorage = async () => {
+    const handleStorage = () => {
       const { edges, vertices, isOriented, smooth_render } =
-        await window.localStorage;
-      // console.log(smooth_render);
+        window.localStorage;
 
       setVertices(JSON.parse(vertices));
       setEdges(JSON.parse(edges));

@@ -39,4 +39,8 @@ export type gui_state = {
   [index: string]: any;
   graph_input: boolean;
   perf_settings: boolean;
+  algos: boolean;
+};
+export type graph_matrix = {
+  [index: string]: any;
 };
