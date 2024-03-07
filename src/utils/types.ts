@@ -1,3 +1,5 @@
+import React from "react";
+
 export type refType = React.MutableRefObject<any> | string;
 export type Vertice = String;
 export type Edge_weight = String;
@@ -44,3 +46,15 @@ export type gui_state = {
 export type graph_matrix = {
   [index: string]: any;
 };
+export enum ls_key {
+  edges = "edges",
+  isOriented = "isOriented",
+  show_gui = "show_gui",
+  smooth_render = "smooth_render",
+  vertices = "vertices"
+}
+export enum guis {
+  perf_settings = "perf_settings",
+  algos = "algos",
+  graph_input = "graph_input",
+}
