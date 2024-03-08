@@ -61,12 +61,9 @@ export default function Dijkstra() {
         marked.push(root)
         let unvisited = [];
         if (graph?.Vertices) {
-            for (let i = 0; i < graph.Vertices.length; i++) {
-                unvisited.push(graph.Vertices[i])
-            }
-            // console.log(unvisited.length)
+            unvisited = [...graph.Vertices]
 
-            while (unvisited.length) {
+            while (unvisited?.length) {
                 let min_node: string | String = "";
                 for (let node of unvisited) {
                     if (min_node === "") {
