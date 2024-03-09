@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getElement } from "../../utils";
 import type { ArrowProps } from "../../utils/types";
+import { motion } from "framer-motion";
 
 const Arrow: React.FC<ArrowProps> = (props: ArrowProps) => {
   const [Props] = useState({
@@ -77,11 +78,26 @@ const Arrow: React.FC<ArrowProps> = (props: ArrowProps) => {
       });
     }
   }, []);
+  const variants = {
+    active: {
+      strokewidth: 7,
+      stroke: "red",
+    },
+    inactive: {
+      strokewidth: 7,
+      stroke: "white",
+    },
+  };
 
   return (
-    <>
-      <path
+    <motion.g>
+      <motion.path
         d={`M ${st.startX} ${st.startY} L ${st.endX} ${st.endY}`}
+        animate={"active"}
+        whileHover={"hover"}
+        whileFocus={"inactive"}
+        whileTap={"inactive"}
+        variants={variants}
         stroke={Props.stroke}
         strokeWidth={Props.strokeWidth}
       />
@@ -90,6 +106,7 @@ const Arrow: React.FC<ArrowProps> = (props: ArrowProps) => {
         fill="white"
         wordSpacing="10px"
         spacing={10}
+        style={{ userSelect: "none", WebkitUserSelect: "none" }}
       >
         {Props.weight}
       </text>
@@ -103,7 +120,7 @@ const Arrow: React.FC<ArrowProps> = (props: ArrowProps) => {
           />
         </g>
       )}
-    </>
+    </motion.g>
   );
 };
 

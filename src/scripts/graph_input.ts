@@ -5,71 +5,81 @@ const error = document.querySelector<HTMLHeadingElement>(".error");
 
 window.dispatchEvent(new Event("storage"));
 
-function load_values_from_localstorage() {
-  const is_visited_before = !!localStorage.getItem("vertices");
-  if (!is_visited_before) {
+function loadValuesFromLocalStorage() {
+  const hasVisitedBefore = !!localStorage.getItem("vertices");
+  if (!hasVisitedBefore) {
     return;
   }
-  form!.vertices.value = JSON.parse(localStorage.getItem("vertices")!);
-  form!.edges.value = JSON.parse(localStorage.getItem("edges")!).join(" ");
-  form!.isOriented.checked = JSON.parse(localStorage.getItem("isOriented")!);
+
+  const vertices = JSON.parse(localStorage.getItem("vertices")!);
+  const edges = JSON.parse(localStorage.getItem("edges")!).join(" ");
+  const isOriented = JSON.parse(localStorage.getItem("isOriented")!);
+
+  form!.vertices.value = vertices;
+  form!.edges.value = edges;
+  form!.isOriented.checked = isOriented;
 }
 
-window.addEventListener("load", load_values_from_localstorage);
+window.addEventListener("load", loadValuesFromLocalStorage);
 
-function validate_graph(G: Graph): boolean | any[] {
-  let err = [];
-  const edges = G.Edges.flat();
+function validateGraph(graph: Graph): boolean | Edge[] {
+  const { Vertices: vertices, Edges: edges } = graph;
+  const invalidEdges: Edge[] = [];
 
-  if (G.Vertices[0] === "") {
+  if (vertices[0] === "") {
     return false;
   }
 
-  for (let i = 0; i < G.Edges.length; i++) {
-    const el = G.Edges[i];
-    const [vert1, vert2, weight] = G.Edges[i];
-    if (!G.Vertices.includes(vert1) || !G.Vertices.includes(vert2)) {
-      err.push(el);
+  for (const [vert1, vert2, weight] of edges) {
+    if (!vertices.includes(vert1) || !vertices.includes(vert2)) {
+      invalidEdges.push([vert1, vert2, weight]);
     }
   }
 
-  if (err.length) {
-    return err;
-  }
-  return true;
+  return invalidEdges.length ? invalidEdges : true;
 }
 
 form!.onsubmit = (e) => {
   e.preventDefault();
 
-  let vertices: Vertice[] = e
-    //@ts-ignore
-    .target!.vertices.value.split(",")
-    .map((vert: Vertice) => vert.trim());
+  const target = e.target;
+  if (!target) {
+    return;
+  }
+  // @ts-ignore
+  const verticesInput = target.vertices;
+  // @ts-ignore
+  const edgesInput = target.edges;
+  // @ts-ignore
+  const isOrientedInput = target.isOriented;
 
-  let edges: Edge[] = e
-    //@ts-ignore
-    .target!.edges.value.split(" ")
-    .filter((edge: String) => edge !== "")
-    .map((edge: String) => edge.split(","));
+  if (!verticesInput || !edgesInput || !isOrientedInput) {
+    return;
+  }
 
-  //@ts-ignore
-  let isOriented = e.target!.isOriented.checked;
+  const verticesValues = verticesInput.value
+    .split(",")
+    .map((vert: string) => vert.trim());
+  const edgesValues = edgesInput.value
+    .split(" ")
+    .filter((edge: string) => edge !== "")
+    .map((edge: string) => edge.split(","));
+  const isOrientedValue = isOrientedInput.checked;
 
-  let is_valid_graph = validate_graph({
-    Vertices: vertices,
-    Edges: edges,
+  const isValidGraph = validateGraph({
+    Vertices: verticesValues,
+    Edges: edgesValues,
   });
 
-  if (Array.isArray(is_valid_graph)) {
-    error!.textContent = `Error: non-existent edges: ${is_valid_graph}`;
-  } else if (!is_valid_graph) {
+  if (Array.isArray(isValidGraph)) {
+    error!.textContent = `Error: non-existent edges: ${isValidGraph}`;
+  } else if (!isValidGraph) {
     error!.textContent = `Error: cannot make empty graph`;
   } else {
     error!.textContent = "";
-    localStorage.setItem("vertices", JSON.stringify(vertices));
-    localStorage.setItem("edges", JSON.stringify(edges));
-    localStorage.setItem("isOriented", JSON.stringify(isOriented));
+    localStorage.setItem("vertices", JSON.stringify(verticesValues));
+    localStorage.setItem("edges", JSON.stringify(edgesValues));
+    localStorage.setItem("isOriented", JSON.stringify(isOrientedValue));
     window.dispatchEvent(new Event("storage"));
   }
 };

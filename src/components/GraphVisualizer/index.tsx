@@ -1,15 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import Arrow from "../Arrow";
 import type { Edge } from "../../utils/types";
 import "./index.css";
 
-export default function GraphVisualizer() {
+const GraphVisualizer = () => {
   const [vertices, setVertices] = useState<String[]>();
   const [edges, setEdges] = useState<Edge[]>();
   const [isOriented, setIsOriented] = useState<boolean>();
   const [isSmooth, setIsSmooth] = useState<boolean>();
   const [updateCount, setUpdateCount] = useState(0);
+
+  const fieldRef = useRef(null);
 
   const updateArrow = () => setUpdateCount((prev) => prev + 1);
 
@@ -25,6 +27,7 @@ export default function GraphVisualizer() {
     };
     handleStorage();
 
+    updateArrow();
     window.addEventListener("storage", handleStorage);
     window.addEventListener("resize", updateArrow);
     return () => {
@@ -38,7 +41,7 @@ export default function GraphVisualizer() {
   }, [edges, vertices]);
 
   return (
-    <div className="GrVi">
+    <div className="GrVi" ref={fieldRef}>
       <svg xmlns="http://www.w3.org/2000/svg" key={updateCount}>
         {edges?.map(([start, end, weight]: Edge) => (
           <Arrow
@@ -54,34 +57,39 @@ export default function GraphVisualizer() {
       {isSmooth
         ? vertices?.map((vert, index) => (
             <motion.div
-              onDrag={updateArrow}
-              drag
-              dragMomentum={false}
               key={`${vert}`}
               className="vertice"
               id={`V-${vert}`}
               style={{
                 top: `calc(30% + ${index * 3}rem)`,
               }}
+              drag
+              dragMomentum={false}
+              dragConstraints={fieldRef}
+              onDragTransitionEnd={updateArrow}
+              onDrag={updateArrow}
             >
               {vert}
             </motion.div>
           ))
         : vertices?.map((vert, index) => (
             <motion.div
-              onDragEnd={updateArrow}
-              drag
-              dragMomentum={false}
               key={`${vert}`}
               className="vertice"
               id={`V-${vert}`}
               style={{
                 top: `calc(30% + ${index * 3}rem)`,
               }}
+              drag
+              dragMomentum={false}
+              dragConstraints={fieldRef}
+              onDragTransitionEnd={updateArrow}
             >
               {vert}
             </motion.div>
           ))}
     </div>
   );
-}
+};
+
+export default GraphVisualizer;
