@@ -43,7 +43,7 @@ import Dijkstra from "../components/Algos/Dijkstra";
             /></label
           >
           <button type="submit" class="btn">Make</button>
-          <h4 class="error"></h4>
+          <h4 class="error error_msg"></h4>
         </form>
       </section>
       <section class="gui_input perf_settings">
@@ -69,12 +69,13 @@ import Dijkstra from "../components/Algos/Dijkstra";
             name="dijkstra_input"
             class="dijkstra_input"
           />
+          <h4 class="dijkstra_error error_msg"></h4>
           <button class="btn" type="submit">Start</button>
         </form>
+        <Dijkstra client:load />
       </section>
     </div>
     <GraphVisualizer client:load />
-    <Dijkstra client:load />
   </main>
 </Layout>
 
@@ -214,7 +215,7 @@ import Dijkstra from "../components/Algos/Dijkstra";
   .checkbox_input {
     margin: 3px 3px 0 3px;
   }
-  .error {
+  .error_msg {
     color: red;
     margin: 1rem 0 0 0;
   }

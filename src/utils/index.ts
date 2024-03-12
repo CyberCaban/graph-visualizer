@@ -24,3 +24,11 @@ export const set_localstorage = (key: string, value: any) => {
     ? localStorage.setItem(key, JSON.stringify(value))
     : localStorage.setItem(key, value);
 };
+
+export const getVerticeCoords = (vertice: string) => {
+  const vert = getElement(vertice);
+  const coords =
+    parseInt(vert?.getBoundingClientRect().x.toFixed(0)) +
+    parseInt(vert?.getBoundingClientRect().width.toFixed(0)) / 2;
+  return coords;
+};
