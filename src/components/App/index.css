@@ -83,6 +83,10 @@ input:focus {
     padding: 4px;
 }
 
+.unminimize {
+    margin: 3.5rem
+}
+
 .unminimize_icon {
     width: 2rem;
     color: white;
