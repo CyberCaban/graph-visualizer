@@ -1,14 +1,23 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import Arrow from "../Arrow";
-import type { Edge } from "../../utils/types";
+import type { Edge, Vertice } from "../../utils/types";
 import "./index.css";
 
-const GraphVisualizer = () => {
-  const [vertices, setVertices] = useState<String[]>();
-  const [edges, setEdges] = useState<Edge[]>();
-  const [isOriented, setIsOriented] = useState<boolean>();
-  const [isSmooth, setIsSmooth] = useState<boolean>();
+type Props = {
+  vertices: Vertice[];
+  edges: Edge[];
+  isOriented: boolean;
+  isSmooth?: boolean;
+  inertia?: boolean;
+};
+const GraphVisualizer = ({
+  edges,
+  vertices,
+  isOriented,
+  isSmooth,
+  inertia,
+}: Props) => {
   const [updateCount, setUpdateCount] = useState(0);
 
   const fieldRef = useRef(null);
@@ -16,22 +25,9 @@ const GraphVisualizer = () => {
   const updateArrow = () => setUpdateCount((prev) => prev + 1);
 
   useEffect(() => {
-    const handleStorage = () => {
-      const { edges, vertices, isOriented, smooth_render } =
-        window.localStorage;
-
-      setVertices(JSON.parse(vertices));
-      setEdges(JSON.parse(edges));
-      setIsOriented(JSON.parse(isOriented));
-      setIsSmooth(JSON.parse(smooth_render));
-    };
-    handleStorage();
-
     updateArrow();
-    window.addEventListener("storage", handleStorage);
     window.addEventListener("resize", updateArrow);
     return () => {
-      window.removeEventListener("storage", handleStorage);
       window.removeEventListener("resize", updateArrow);
     };
   }, []);
@@ -47,47 +43,30 @@ const GraphVisualizer = () => {
           <Arrow
             start={`V-${start}`}
             end={`V-${end}`}
-            key={`${start.concat(`-${end}-${weight || ""}`)}`}
+            key={`${start.concat(`-${end}-${weight || ""}-${isOriented}`)}`}
             showHead={isOriented}
             weight={`${weight || ""}`}
           />
         ))}
       </svg>
 
-      {isSmooth
-        ? vertices?.map((vert, index) => (
-            <motion.div
-              key={`${vert}`}
-              className="vertice"
-              id={`V-${vert}`}
-              style={{
-                top: `calc(30% + ${index * 3}rem)`,
-              }}
-              drag
-              dragMomentum={false}
-              dragConstraints={fieldRef}
-              onDragTransitionEnd={updateArrow}
-              onDrag={updateArrow}
-            >
-              {vert}
-            </motion.div>
-          ))
-        : vertices?.map((vert, index) => (
-            <motion.div
-              key={`${vert}`}
-              className="vertice"
-              id={`V-${vert}`}
-              style={{
-                top: `calc(30% + ${index * 3}rem)`,
-              }}
-              drag
-              dragMomentum={false}
-              dragConstraints={fieldRef}
-              onDragTransitionEnd={updateArrow}
-            >
-              {vert}
-            </motion.div>
-          ))}
+      {vertices?.map((vert, index) => (
+        <motion.div
+          key={`${vert}`}
+          className="vertice"
+          id={`V-${vert}`}
+          style={{
+            top: `calc(30% + ${index * 3}rem)`,
+          }}
+          drag
+          dragMomentum={inertia ? true : false}
+          dragConstraints={fieldRef}
+          onDragTransitionEnd={updateArrow}
+          onDrag={isSmooth ? updateArrow : undefined}
+        >
+          {vert}
+        </motion.div>
+      ))}
     </div>
   );
 };

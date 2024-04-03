@@ -90,7 +90,7 @@ const Arrow: React.FC<ArrowProps> = (props: ArrowProps) => {
   };
 
   return (
-    <motion.g>
+    <g>
       <motion.path
         d={`M ${st.startX} ${st.startY} L ${st.endX} ${st.endY}`}
         animate={"active"}
@@ -120,7 +120,7 @@ const Arrow: React.FC<ArrowProps> = (props: ArrowProps) => {
           />
         </g>
       )}
-    </motion.g>
+    </g>
   );
 };
 
