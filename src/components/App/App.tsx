@@ -1,26 +1,26 @@
 import GraphVisualizer from "../GraphVisualizer";
-import Dijkstra from "../Algos/Dijkstra";
+import Dijkstra from "../Algos/Dijkstra/Dijkstra.tsx";
 import arrows_out from "./arrows-out.svg";
 import arrows_in from "../../icons/arrows-in.svg";
 import algos_icon from "../../icons/algos.svg";
 import settings from "../../icons/settings.svg";
-import "./index.css";
-import { lazy, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   type Edge,
   type Graph,
   type gui_state,
   type guis,
-  type Vertice,
 } from "../../utils/types.ts";
 import { getLocalstorage, setLocalstorage } from "../../utils";
 import Icon from "../Icon/Icon.tsx";
 import Checkbox from "./../Checkbox/Checkbox";
+import "./index.css";
 
 export default function App() {
   const [vertices, setVertices] = useState("");
   const [edges, setEdges] = useState("");
   const [isOriented, setIsOriented] = useState<boolean>();
+  const [root, setRoot] = useState<string>();
   const [isSmooth, setIsSmooth] = useState<boolean>();
   const [inertia, setInertia] = useState<boolean>();
   const [error, setError] = useState("");
@@ -152,6 +152,7 @@ export default function App() {
                 </button>
                 <button
                   className="btn open_algos"
+                  disabled
                   onClick={() => handleGui("algos")}
                 >
                   <Icon src={algos_icon.src} className="icon" />
@@ -196,9 +197,9 @@ export default function App() {
                     onChange={(e) => setIsOriented(e.target.checked)}
                   />
                 </label>
-                <button type="submit" className="btn">
+                {/* <button type="submit" className="btn">
                   Make
-                </button>
+                </button> */}
                 <h4 className="error error_msg">{error}</h4>
               </form>
             </section>
@@ -222,6 +223,7 @@ export default function App() {
             )}
             {showgui?.algos && (
               <section className="gui_input algos">
+                <span className="text-red-500">Disabled</span>
                 <form action="" className="algos_dijkstra">
                   <label form="">Dijkstra</label>
                   <input
@@ -229,13 +231,14 @@ export default function App() {
                     id="dijkstra_input"
                     name="dijkstra_input"
                     className="dijkstra_input"
+                    onChange={(e) => setRoot(e.target.value)}
                   />
                   <h4 className="dijkstra_error error_msg"></h4>
                   <button className="btn" type="submit">
                     Start
                   </button>
                 </form>
-                {/*<Dijkstra/>*/}
+                {/* <Dijkstra graph={graph as Graph} root={root as string} /> */}
               </section>
             )}
           </div>
